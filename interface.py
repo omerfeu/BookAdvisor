@@ -3,33 +3,36 @@ import pandas as pd
 
 def save_database(df: pd.DataFrame):
     path = input("Enter path: ")  # todo: check errors
-    df.to_csv(path)
+    df.to_csv(path, index=False)
+    return df
 
 
-def add_book(df):
-    name = input("Enter book name: ")
+def add_book(df: pd.DataFrame):
+    title = input("Enter book title: ")
     num = input("Pages number: ")
     genre = input("Genre: ")
-    df.loc[len(df.index)] = [name, num, genre]
+    df.loc[len(df.index)] = [title, num, genre]
+    return df
 
 
-def load_database(df):
+def load_database(df: pd.DataFrame):
     path = input("Enter path: ")
-    df = pd.read_csv(path)
+    return pd.read_csv(path)
 
 
 def add_from_database(df: pd.DataFrame):
     path = input("Enter path: ")
     new_df = pd.read_csv(path)
-    df.append(new_df)
+    return pd.concat([df, new_df]).reset_index(drop=True)
 
 
 def print_database(df: pd.DataFrame):
     print(df)
+    return df
 
 
 if __name__ == '__main__':
-    df = pd.DataFrame(columns=['Name', 'Pages', 'Genre'])
+    df = pd.DataFrame(columns=['Title', 'Pages', 'Genre'])
     instructions = {
         'add book': add_book,
         'load new database': load_database,
@@ -51,6 +54,6 @@ if __name__ == '__main__':
             print("No such thing...")
             continue
         else:
-            instructions[inp](df)
+            df = instructions[inp](df)
 
         print("Done!")
