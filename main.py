@@ -1,4 +1,4 @@
-from ToyDataCreator import *
+from DataFactory import *
 from Advisor import *
 
 if __name__ == '__main__':
